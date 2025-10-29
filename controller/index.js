@@ -1,5 +1,4 @@
 const mongodb = require('../db/connect');
-const { get } = require('../routes');
 const {ObjectId} = require('mongodb')
 
 const getAll = async (req,res) =>{
