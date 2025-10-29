@@ -9,7 +9,8 @@ const port = process.env.PORT || 3003
 app.use(cors());
 app.use(express.json())
 
-app.use('/', require('./routes'))
+app.use('/users', require('./routes'))
+
 
 mongodb.initDb((err, mongodb) => {
     if(err){
