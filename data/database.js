@@ -14,7 +14,7 @@ const initDb = (callback) => {
    
    MongoClient.connect(process.env.MONGODB_URI)
    .then((client)=> {
-    database = client.db;
+    database = client.db();
     callback(null, database);
    })
    .catch((err) => {
