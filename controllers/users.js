@@ -1,0 +1,67 @@
+const mongodb = require('../data/database');
+const {ObjectId} = require('mongodb')
+
+const getAll = async (req,res) =>{
+    const result = await mongodb.getDatabase().collection('users').find()
+   result.toArray().then((user) => {
+    res.setHeader('content-type', 'application/json')
+    res.status(200).json(user)
+   })
+}
+const getSingle = async(req,res)=>{
+    const userId = new ObjectId(req.params.id)
+   const result = await mongodb.getDatabase().collection('users').find({_id: userId})
+   result.toArray().then((user) => {
+    res.setHeader('content-type', 'application/json')
+    res.status(200).json(user[0])
+   })
+}
+
+const createUser = async (req, res) => {
+    const user = {
+        email: req.body.email,
+        username: req.body.username,
+        name: req.body.name,
+        ipaddress: req.body.ipaddress
+    }
+    const response = await mongodb.getDatabase().collection('users').insertOne(user)
+
+    res.status(201).json({ id: response.insertedId });
+
+    if(response.acknowledged > 0){
+        res.status(204).send()
+    } else {
+        res.status(500).json(response.error || "Some Error occoured updating the user");
+    }
+}
+const updateUser = async (req, res) => {
+    const userId = new ObjectId(req.params.id)
+    const user = {
+        email: req.body.email,
+        username: req.body.username,
+        name: req.body.name,
+        ipaddress: req.body.ipaddress
+    }
+    const response = await mongodb.getDatabase().collection('users').replaceOne({_id: userId}, user)
+    if(response.modifiedCount > 0){
+        res.status(204).send()
+    } else {
+        res.status(500).json(response.error || "Some Error occoured updating the user");
+
+    }
+}
+const deleteUser = async (req,res) => {
+    const userId = new ObjectId(req.params.id)
+    const response = await mongodb.getDatabase().collection('users').deleteOne({_id: userId}, true)
+    if (response.deletedCount > 0){
+       res.status(204).send()
+    } else {
+        res.status(500).json(response.error || "Some Error occoured while deleting the user");
+    } 
+}
+module.exports = {
+    getAll, 
+    getSingle, 
+    createUser, 
+    updateUser, 
+    deleteUser}
