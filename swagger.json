@@ -7,9 +7,7 @@
   },
   "host": "cse341-project1-0dow.onrender.com",
   "basePath": "/",
-  "schemes": [
-    "https"
-  ],
+  "schemes": ["https", "http"],
   "paths": {
     "/users/": {
       "get": {
