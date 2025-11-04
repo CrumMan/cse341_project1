@@ -7,7 +7,6 @@ const app = express();
 
 const port = process.env.PORT || 3001;
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(bodyParser.json())
 app.use((req, res,next) => {
     res.setHeader('Access-Control-Allow-Orgin', '*')
@@ -18,6 +17,8 @@ app.use((req, res,next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
     next();
 })
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/', require('./routes'))
 
 
